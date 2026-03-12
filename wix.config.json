@@ -1,0 +1,5 @@
+{
+  "$schema": "https://dev.wix.com/wix-cli/schemas/wix-config.json",
+  "appId": "8184d918-7b95-4e4e-9464-fac109014965",
+  "projectId": "agentzee-prod"
+}
