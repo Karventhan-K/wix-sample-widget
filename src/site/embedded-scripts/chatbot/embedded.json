@@ -1,0 +1,7 @@
+{
+  "$schema": "https://dev.wix.com/wix-cli/schemas/embedded-script.json",
+  "id": "b4094645-99e8-4187-8a91-929f4bb65a8b",
+  "name": "chatbot",
+  "scriptType": "ESSENTIAL",
+  "placement": "HEAD"
+}
