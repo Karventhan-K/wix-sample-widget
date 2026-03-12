@@ -1,55 +1,69 @@
-import React, { type FC } from 'react';
-import { dashboard } from '@wix/dashboard';
+import React, { useState, useEffect, type FC } from "react";
+import { dashboard } from "@wix/dashboard";
 import {
-  Button,
-  EmptyState,
-  Image,
   Page,
-  TextButton,
   WixDesignSystemProvider,
-} from '@wix/design-system';
-import '@wix/design-system/styles.global.css';
-import * as Icons from '@wix/wix-ui-icons-common';
-import wixLogo from './wix_logo.svg';
+  Input,
+  Button,
+  Box,
+  Text,
+  ToggleSwitch,
+} from "@wix/design-system";
+
+import "@wix/design-system/styles.global.css";
 
 const Index: FC = () => {
+  const [agentId, setAgentId] = useState("");
+  const [enabled, setEnabled] = useState(false);
+
+  useEffect(() => {
+    const savedAgentId = localStorage.getItem("agentzee-agent-id");
+    const savedEnabled = localStorage.getItem("agentzee-enabled");
+
+    if (savedAgentId) setAgentId(savedAgentId);
+    if (savedEnabled) setEnabled(savedEnabled === "true");
+  }, []);
+
+  const saveSettings = () => {
+    localStorage.setItem("agentzee-agent-id", agentId);
+    localStorage.setItem("agentzee-enabled", String(enabled));
+
+    dashboard.showToast({
+      message: "Agentzee chatbot settings saved!",
+    });
+  };
+
   return (
     <WixDesignSystemProvider features={{ newColorsBranding: true }}>
       <Page>
         <Page.Header
-          title="Dashboard Page"
-          subtitle="Add management capabilities to your app."
-          actionsBar={
-            <Button
-              onClick={() => {
-                dashboard.showToast({
-                  message: 'Your first toast message!',
-                });
-              }}
-              prefixIcon={<Icons.GetStarted />}
-            >
-              Show a toast
-            </Button>
-          }
+          title="Agentzee AI Chatbot"
+          subtitle="Configure your chatbot settings."
         />
+
         <Page.Content>
-          <EmptyState
-            image={
-              <Image fit="contain" height="100px" src={wixLogo} transparent />
-            }
-            title="Start editing this dashboard page"
-            subtitle="Learn how to work with dashboard pages and how to add functionality to them using Wix APIs."
-            skin="page"
-          >
-            <TextButton
-              as="a"
-              href="https://dev.wix.com/docs/build-apps/develop-your-app/frameworks/wix-cli/supported-extensions/dashboard-extensions/dashboard-pages/add-dashboard-page-extensions-with-the-cli#add-dashboard-page-extensions-with-the-cli"
-              target="_blank"
-              prefixIcon={<Icons.ExternalLink />}
+          <Box direction="vertical" gap="20px" width="400px">
+
+            <Text size="medium">Agent ID</Text>
+
+            <Input
+              placeholder="Enter your Agentzee Agent ID"
+              value={agentId}
+              onChange={(e) => setAgentId(e.target.value)}
+            />
+
+            <ToggleSwitch
+              checked={enabled}
+              onChange={() => setEnabled(!enabled)}
             >
-              Dashboard pages documentation
-            </TextButton>
-          </EmptyState>
+              Enable Chatbot
+            </ToggleSwitch>
+
+            <Button onClick={saveSettings}>
+              Save Settings
+            </Button>
+
+          </Box>
         </Page.Content>
       </Page>
     </WixDesignSystemProvider>
